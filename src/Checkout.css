@@ -1,0 +1,20 @@
+.checkout{
+    display: flex;
+    background-color: white;
+    height: max-content;
+    padding: 20px;
+}
+.checkout__title{
+    border-bottom: 1px solid gold ;
+    padding: 10px ;
+}
+.checkout__left{
+    background-color:white;
+}
+.checkout__image{
+    width: 100%;
+    margin-bottom: 10px;
+}
+.checkout__right{
+    background-color: aqua;
+}

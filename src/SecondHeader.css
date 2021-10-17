@@ -1,0 +1,22 @@
+body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.second__headerfirst{
+    display: flex;
+    padding: 0px 50px;
+    background-color:#232F3E;
+    color: white;
+    padding: 9px;
+}
+.second__header p{
+    padding: 0px 12px;
+    font-size: 14px;
+    position: sticky;
+}
+.menu{
+    margin: -3px 10px;
+    z-index: 10;
+}
+.all{
+    margin-left: -18px;
+}
