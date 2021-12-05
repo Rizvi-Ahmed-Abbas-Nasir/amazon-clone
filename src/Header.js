@@ -5,9 +5,12 @@ import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutl
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import { Link } from 'react-router-dom';
+import { useStateValue } from './StateProvider';
 
 
 function Header() {
+    const  [{cart}, dispatch] = useStateValue();
+    
     return (
         <div className="header">
             <Link to="/"> 
@@ -48,7 +51,7 @@ function Header() {
             <Link to="Checkout">
             <div className="Cart">
                 <AddShoppingCartOutlinedIcon /> 
-                <span className="header__optionLineTwo header__Bastketcart">0</span>
+                <span className="header__optionLineTwo header__Bastketcart">{cart.length}</span>
             </div>
             </Link> 
             
