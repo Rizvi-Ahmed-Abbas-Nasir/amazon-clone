@@ -10,12 +10,12 @@ function Product({id,title, price, image}) {
 
     const AddToCart= () =>{
        dispatch({
-           type: "ADD_TO_CART",
-           item: {
-            id: id,
-            title: title,
-            price: price,
-            image: image,
+        type: "ADD_TO_CART",
+        item: {
+        id: id,
+        title: title,
+        price: price,
+        image: image,
            }
         }
 
@@ -29,7 +29,7 @@ function Product({id,title, price, image}) {
             
 
                 <p className="product__price">
-                <bold>Price: ₹</bold>
+                <bold>price: ₹</bold>
                 <strong> {price}</strong>
                 </p>
                 
@@ -43,3 +43,4 @@ function Product({id,title, price, image}) {
 };
 
 export default Product
+
