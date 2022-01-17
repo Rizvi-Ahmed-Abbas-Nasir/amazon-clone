@@ -1,0 +1,16 @@
+.Login__IMAGE{
+    background-color: white;
+    margin-top:20px ;
+    margin-bottom: 20px;
+    object-fit: contain;
+    width: 100px;
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.login{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+}
