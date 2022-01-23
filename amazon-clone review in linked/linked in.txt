@@ -1,0 +1,13 @@
+Amazon Clone is Live:
+
+Technology used during creation:
+1. FrontEnd -> REACT
+2. Backend -> Firebase
+3. Database -> FireStore
+4. REACT Context API
+5. REACT HOOK.
+6. Add to Cart and Remove from Cart Feature in Realtime.
+7. Advance JavaScript programming concept.
+8. User Authentication module to Real-time Log-In and Log-Out.
+9. Pages created: Home.js, Header.js, App.js, Product.js, Checkout.js, Login.js, API.js, CheckoutProduct.js, StateProvider.js 
+10. State,  Cart, User management.

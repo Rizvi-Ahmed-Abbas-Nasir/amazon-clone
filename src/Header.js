@@ -6,14 +6,21 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import { Link } from 'react-router-dom';
 import { useStateValue } from './StateProvider';
+import { auth } from './firebase';
 
 
 function Header() {
-    const  [{cart}, dispatch] = useStateValue();
+    const  [{cart,user}, dispatch] = useStateValue();
+
+    const  handleAuthentication = () => {
+        if(user){
+            auth.signOut();
+        }
+    }
     
     return (
         <div className="header">
-            <Link to="/"> 
+            <Link to= {!user && '/login'}> 
             <img className="header__logo" src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazon" />
             </Link> 
             <div className="header__option0">
@@ -40,9 +47,9 @@ function Header() {
         <ArrowDropDownOutlinedIcon className="arrow"/>
             <div className="header__nav">
                 <Link to = '/login'>
-                <div className="header__option">
-                        <span className="header__optionLineOne">Hello, Sign in</span>
-                        <span className="header__optionLineTwo">Account & Lists</span>
+                <div onClick={handleAuthentication} className="header__option">
+                        <span className="header__optionLineOne">Hello, {user ? 'signOut' : 'signIn' }</span>
+                        <span className="header__optionLineTwo">Hello, {!user ? 'Guest' : user.email }</span>
                 </div>
                 </Link>
                 <div className="header__option">
