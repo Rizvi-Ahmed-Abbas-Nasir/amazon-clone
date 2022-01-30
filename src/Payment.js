@@ -1,5 +1,5 @@
 import {CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React, {useState} from 'react';
+import React, {useState , useEffect} from 'react';
 import CheckProduct from './CheckProduct';
 import './Payment.css';
 import { useStateValue } from './StateProvider';
@@ -9,24 +9,35 @@ import CurrencyFormat from 'react-currency-format';
 function Payment()
 {
     const  [{cart,user}, dispatch] = useStateValue();
-
     const stripe = useStripe
     const elements = useElements
-
     const [error, setError] = useState(null);
     const [disabled, setDisabled] = useState(true);
     const [succeeded, setSucceeded] = useState(false);
     const[processing, setProcessing] = useState("");
 
-    const handleSubmit = e =>{
+    useEffect(() =>{
+        // Generate the special stripe secret which allows us to change a customer
+        const getClientSecret = async () => {
+            const response = await axios;
+        }
+        getClientSecret();
 
-    }
+    },[cart])
 
-    const handlechange = event =>{
+    const handleSubmit =  async (event) =>{
+        event.preventDefualt();
+        setProcessing(true);
+
+        // const payLoad = await stripe ();
+        
+    };
+
+    const handlechange = (event) =>{
         setDisabled(event.empty);
         setError(event.error ? event.error.message : "");
         
-    }
+    };
 
     return(
         <div className='Payment'>
