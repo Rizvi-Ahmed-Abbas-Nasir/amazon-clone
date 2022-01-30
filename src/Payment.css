@@ -1,0 +1,27 @@
+.Payment{
+    background-color: white;
+
+}
+.Payment--container{
+    text-align: center;
+    padding: 10px;
+    background-color: aliceblue;
+    border-bottom: 1px solid lightgray;
+
+}
+.payment--section{
+    display: flex;
+    padding: 20px;
+    border-bottom:1px solid lightblue;
+    margin: 0 20px;
+
+}
+.payment--address{
+    float: 0.2;
+}
+.payment--title{
+    flex:  0.2;
+}
+.payment--address, .payment--item, .payment--details{
+    flex: 0.8;
+}
