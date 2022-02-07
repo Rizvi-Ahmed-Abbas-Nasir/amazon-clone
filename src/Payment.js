@@ -1,111 +1,128 @@
-import {CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React, {useState , useEffect} from 'react';
-import CheckProduct from './CheckProduct';
-import './Payment.css';
-import { useStateValue } from './StateProvider';
-import { getCartTotal } from './reducer';
-import CurrencyFormat from 'react-currency-format';
 
-function Payment()
-{
-    const  [{cart,user}, dispatch] = useStateValue();
-    const stripe = useStripe
-    const elements = useElements
-    const [error, setError] = useState(null);
-    const [disabled, setDisabled] = useState(true);
-    const [succeeded, setSucceeded] = useState(false);
-    const[processing, setProcessing] = useState("");
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import CurrencyFormat from "react-currency-format";
+import CheckProduct from "./CheckProduct";
+import "./Payment.css";
+import { getCartTotal } from "./reducer";
+import { useStateValue } from "./StateProvider";
+import { useHistory } from "react-router-dom";
 
-    useEffect(() =>{
-        // Generate the special stripe secret which allows us to change a customer
-        const getClientSecret = async () => {
-            const response = await axios;
-        }
-        getClientSecret();
+function Payment() {
+  const [{ cart, user }, dispatch] = useStateValue();
+  const history = useHistory();
 
-    },[cart])
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(true);
+  const [processing, setProcessing] = useState("");
+  const [succeeded, setSucceeded] = useState(false);
+  const [clientSecret, setClientSecret] = useState(true);
 
-    const handleSubmit =  async (event) =>{
-        event.preventDefualt();
-        setProcessing(true);
-
-        // const payLoad = await stripe ();
-        
+  useEffect(() => {
+    // generate the special stripe secret which allows us to charge a customer
+    const getClientSecret = async () => {
+      const response = await axios({
+        method: "post",
+        //stripe expect total amount in base currencies like Rupees to paise
+        url: `/payments/create?total=${getCartTotal(cart) * 100}`,
+      });
+      setClientSecret(response.data.clientSecret);
     };
 
-    const handlechange = (event) =>{
-        setDisabled(event.empty);
-        setError(event.error ? event.error.message : "");
-        
-    };
+    getClientSecret();
+  }, [cart]);
 
-    return(
-        <div className='Payment'>
-            <div className='Payment--container'>       
-                <div className='payment--section'>
-                    <div className='payment--title'>
-                        <h3>Delivery Address</h3>
-                    </div>
-                    <div className='payment--address'>
-                        <p>{user?.email}</p>
-                        <p>falt 301 Hiranandani</p>
-                        <p>Andheri, India</p>
-                    </div>
-                </div>
-                <div className='payment--section'>
-                    <div className='payment--title'>
-                        <h3>Review your Item in cart:</h3>
-                    </div>
-                        <div className='payment--item'>
-                        {cart.map(item => (
-                        <CheckProduct
-                        id = {item.id}
-                        title = {item.title}
-                        image={item.image}
-                        price={item.price}
-                        
-                        />
-                    ))}    
-                        </div> 
-                    
-                </div>
-                <div className='payment--section'>
-                        <div className='payment--title'>
-                            <h3>Payment Method:</h3>
-                        </div>        
-                            <div className='payment--details'>
-                                {/* {stripe} */}
-                                <form onSubmit={handleSubmit}>
-                                    <CardElement onChange={handlechange} />
-                                    <div className='payment--priceContainer'>
-                                    <CurrencyFormat
-                                    renderText= {(value) => (
-                                    <>
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setProcessing(true);
 
-                                    <p>Subtotal ({cart.length} item):<strong>{value}</strong>{""} </p>
-                                        
-                                    </>
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      }
+    }).then( ({paymentIntent}) => {
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false)
 
-                                    )}
-                                decimalScale = {2}
-                                value = {getCartTotal(cart)}
-                                displayType = {"text"}
-                                thousandSeparator = {true}
-                                prefix = {"₹"}
-                                />      
-                                <button disabled={processing || disabled || succeeded}>
-                                    <span>{processing ? <p>processing</p>: "buy Now" }</span> 
-                                   
-                                </button>
-                                    </div>
-                                        {error && <div>{error}</div>}
-                                </form>
-                            </div>
-                </div>
-            </div>
+        history.replace('/orders')
+    })
+  };
+
+  const handleChange = (event) => {
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  return (
+    <div className="Payment">
+      <div className="Payment--container">
+        {/* Delivery Address */}
+        <div className="payment--section">
+          <div className="payment--title">
+            <h3>Delivery Address:</h3>
+          </div>
+          <div className="payment--address">
+            <p>{user?.email}</p>
+            <p>Falt No.301, Hiranandani</p>
+            <p>Andheri, India</p>
+          </div>
         </div>
-    )
-
+        {/* Cart Review */}
+        <div className="payment--section">
+          <div className="payment--title">
+            <h3>Review Item in Cart:</h3>
+          </div>
+          <div className="payment--items">
+            {cart.map((item) => (
+              <CheckProduct
+                id={item.id}
+                title={item.title}
+                image={item.image}
+                price={item.price}
+              />
+            ))}
+          </div>
+        </div>
+        {/* Payment Gateway */}
+        <div className="payment--section">
+          <div className="payment--title">
+            <h3>Payment Method:</h3>
+          </div>
+          <div className="payment--details">
+            {/* Stripe Secret Code */}
+            <form onSubmit={handleSubmit}>
+              <CardElement onChange={handleChange} />
+              <div className="payment--priceContainer">
+                <CurrencyFormat
+                  renderText={(value) => (
+                    <>
+                      <p>
+                        Subtotal ({cart.length} items):<strong>{value}</strong>{" "}
+                      </p>
+                    </>
+                  )}
+                  decimalScale={2}
+                  value={getCartTotal(cart)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                />
+                <button disabled={processing || disabled || succeeded}>
+                  <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
+                </button>
+              </div>
+              {/* Errors */}
+              {error && <div>{error}</div>}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Payment
+export default Payment;
