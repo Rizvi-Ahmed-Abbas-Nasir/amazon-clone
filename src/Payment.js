@@ -8,6 +8,7 @@ import "./Payment.css";
 import { getCartTotal } from "./reducer";
 import { useStateValue } from "./StateProvider";
 import { useHistory } from "react-router-dom";
+import { Stripe } from "@stripe/stripe-js";
 
 function Payment() {
   const [{ cart, user }, dispatch] = useStateValue();
@@ -43,7 +44,7 @@ function Payment() {
       payment_method: {
         card: elements.getElement(CardElement),
       }
-    }).then( ({paymentIntent}) => {
+    }).then( ({PaymentIntent}) => {
         setSucceeded(true);
         setError(null);
         setProcessing(false)
