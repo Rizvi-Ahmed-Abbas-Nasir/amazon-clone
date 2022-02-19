@@ -1,4 +1,4 @@
-
+//Payment.js
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -8,14 +8,13 @@ import "./Payment.css";
 import { getCartTotal } from "./reducer";
 import { useStateValue } from "./StateProvider";
 import { useHistory } from "react-router-dom";
-import { Stripe } from "@stripe/stripe-js";
 
 function Payment() {
   const [{ cart, user }, dispatch] = useStateValue();
   const history = useHistory();
 
   const stripe = useStripe();
-  const elements = useElements();
+  const Elements = useElements();
   const [error, setError] = useState(null);
   const [disabled, setDisabled] = useState(true);
   const [processing, setProcessing] = useState("");
@@ -36,18 +35,26 @@ function Payment() {
     getClientSecret();
   }, [cart]);
 
+  console.log('Client Secrect:', clientSecret);
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setProcessing(true);
 
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: elements.getElement(CardElement),
+        card: Elements.getElement(CardElement),
       }
     }).then( ({PaymentIntent}) => {
         setSucceeded(true);
         setError(null);
         setProcessing(false)
+        dispatch(
+          {
+            type: 'EMPTY_CART',
+          }
+        )
 
         history.replace('/orders')
     })
@@ -59,8 +66,8 @@ function Payment() {
   };
 
   return (
-    <div className="Payment">
-      <div className="Payment--container">
+    <div className="payment">
+      <div className="payment--container">
         {/* Delivery Address */}
         <div className="payment--section">
           <div className="payment--title">
