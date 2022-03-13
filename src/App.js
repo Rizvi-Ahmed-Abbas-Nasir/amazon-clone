@@ -1,82 +1,75 @@
-
-import React, {useEffect} from "react";
+//App.js
+import React, {useEffect, useState} from 'react'; 
 import "./App.css";
-import orders from './orders';
-import Header from "./Header";
-import SecondHeader from "./SecondHeader"
-import Home from "./Home";
-import Checkout from "./Checkout";
-import Payment from "./Payment";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./Login";
-import { auth } from "./firebase";
-import { useStateValue } from "./StateProvider";
+import Header from'./Header';
+import Home from'./Home';
+import Checkout from './Checkout';
+import Payment from './Payment';
+import { BrowserRouter as Router,Switch, Route } from "react-router-dom";
+import Login from './Login';
+import { auth } from './firebase';
+import { useStateValue } from './StateProvider';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import Orders from "./orders";
 
-const promise = loadStripe('pk_test_51KMbTZSBGjHkWRO3NNMUewJlxUasHRDIKRPXCd2bCLDqeOL5Si8EtkgcGnKZwgBXh1qDotti1WTMNrmAlrciSnYU00GxZnkVFK');
+const promise = loadStripe("pk_test_51KHr7lSItq399U0KdjI3Q6jtD7YZXYWJmzEvRV3im3u3nb5F8wmfVYs75LPrvUEyqDDGXyh1UHYo1Ikswsv33Jrh00Eahef0Rj");
 
 function App() {
   const [{}, dispatch] = useStateValue();
-
-  useEffect(() =>{
-    //will only run once when app component is loaded.
-    auth.onAuthStateChanged(
-      authUser => {
+  
+  
+    useEffect(() => {
+      auth.onAuthStateChanged(
+       authUser => {
         console.log('THE USER IS :', authUser);
-      if (authUser){
-        //user just logged in / user was logged in
-        dispatch(
-          {
+       
+       if(authUser){
+          dispatch({
             type: 'SET_USER',
             user: authUser
-          }
-        )
-      }
-      else{
-        //user logged out
-        dispatch(
-          {
-            type: 'SET_USER',
-            user: null
-          }
-        )
-      }
-    })
-  }, [])
-
-  return (
-    <Router>
-      <div className="App">
-        <Switch>
-              <Route path="/orders">
+          })
+       } 
+       else{
+           dispatch(
+             {
+               type: 'SET_USER',
+               user: null
+             }
+           )
+       }
+      })
+    }, [])
+  
+    return (
+      <Router>
+        <div className="App">
+          <Switch>
+          <Route path="/orders">
+              <Header />
+              <Orders />
+            </Route>
+            <Route path="/login">
+              <Login/>
+            </Route>
+              <Route path="/Checkout">
                 <Header />
-                <orders />
-              </Route>
-              <Route path="/Login">
-                <Login />
-              </Route>
-              <Route path="/checkout">
-                      <Header />
-                      <SecondHeader />
-                      <Checkout /> 
+                <Checkout />
               </Route>
               <Route path="/payment">
-                      <Header />
-                      <SecondHeader />
-                      <Elements stripe={promise}>
-                          <Payment />
-                      </Elements>
+                <Header />
+                <Elements stripe={promise}>
+                  <Payment />
+                </Elements>
               </Route>
               <Route path="/">
-                      <Header />
-                      <SecondHeader />
-                      <Home />
-              </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
+                <Header />
+                <Home />
+              </Route>   
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+  
+  export default App;

@@ -20,7 +20,7 @@ function Header() {
     
     return (
         <div className="header">
-            <Link to= {!user && '/login'}> 
+            <Link to = "/Home"> 
             <img className="header__logo" src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazon" />
             </Link> 
             <div className="header__option0">

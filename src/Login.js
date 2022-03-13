@@ -41,7 +41,7 @@ function Login() {
 
     return (
         <div className='login'>
-            <Link to = "/">
+            <Link to = "/Home">
             <img className="Login__IMAGE" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="amazon"/>
             </Link>
             <div className='login--container'>
