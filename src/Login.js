@@ -1,5 +1,3 @@
-
-
 //Login.js
 import React, {useState} from 'react';
 import { Link , useHistory } from 'react-router-dom';
@@ -41,8 +39,8 @@ function Login() {
 
     return (
         <div className='login'>
-            <Link to = "/Home">
-            <img className="Login__IMAGE" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="amazon"/>
+            <Link to = "/">
+            <img className="login--logo" src="http://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazon"/>
             </Link>
             <div className='login--container'>
                 <h1>Sign-In</h1>
@@ -51,12 +49,12 @@ function Login() {
                     <input type='text' value={email} onChange={e => setEmail(e.target.value)}  />
                     <h5>Password</h5>
                     <input type='password' value={password} onChange={e => setPassword(e.target.value)}/>
-                    <button type='submit' onClick={signIn} className='sign-in-button'>Sign In</button>
+                    <button type='submit' onClick={signIn} className='login--signButton'>Sign In</button>
                 </form>
                 <p>
                 By continuing, you agree to Amazon's Conditions of Use and Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
                 </p>
-                <button type='submit' onClick={register} className='regsisterbutton'>Create your Amazon Account</button>
+                <button type='submit' onClick={register} className='login--registerButton'>Create your Amazon Account</button>
             </div>
         </div>
     )

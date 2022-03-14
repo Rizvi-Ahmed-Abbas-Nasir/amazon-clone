@@ -1,3 +1,4 @@
+//reducer.js
 export const initialState = {
     cart: [],
     user: null
@@ -36,8 +37,9 @@ const reducer = (state, action) => {
                 ...state,
                 user: action.user
             }
+
         case 'EMPTY_CART':
-            return{
+            return {
                 ...state,
                 cart: []
             }

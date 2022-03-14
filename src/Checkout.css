@@ -1,20 +1,37 @@
+/*Checkout.css*/
 .checkout{
+    background-color: bisque;
     display: flex;
-    background-color: white;
     height: max-content;
     padding: 20px;
 }
-.checkout__title{
-    border-bottom: 1px solid gold ;
-    padding: 10px ;
+
+.checkout--left{
+    background-color: white;
 }
-.checkout__left{
-    background-color:white;
-}
-.checkout__image{
+
+.checkout--adv{
     width: 100%;
     margin-bottom: 10px;
 }
-.checkout__right{
+
+.checkout--title{
+    padding: 10px;
+    border-bottom: 1px solid black;
+}
+
+.checkout--right{
     background-color: aqua;
 }
+
+@media (max-width: 844px) { 
+    .checkout{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .checkout--right{
+        margin: 0px 0px 20px 0px;
+    }
+ }
+
+ 

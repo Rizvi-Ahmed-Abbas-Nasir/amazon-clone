@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Payment.css";
 import { useStateValue } from "./StateProvider";
-import CheckProduct from "./CheckProduct";
+import CheckoutProduct from "./CheckoutProduct";
 import { Link, useHistory } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
@@ -102,7 +102,7 @@ function Payment() {
               </div>
               <div className="payment--items"> 
                 {cart.map((item) => (
-                  <CheckProduct
+                  <CheckoutProduct
                     id={item.id}
                     title={item.title}
                     image={item.image}
@@ -111,42 +111,43 @@ function Payment() {
                 ))}
               </div>
             </div>
-        {/* Payment Gateway */}
-        <div className="payment--section">
-          <div className="payment--title">
-            <h3>Payment Method:</h3>
-          </div>
-          <div className="payment--details">
-            {/* Stripe Secret Code */}
-            <form onSubmit={handleSubmit}>
-              <CardElement onChange={handleChange} />
-              <div className="payment--priceContainer">
-                <CurrencyFormat
-                  renderText={(value) => (
-                    <>
-                      <p>
-                        Subtotal ({cart.length} items):<strong>{value}</strong>{" "}
-                      </p>
-                    </>
-                  )}
-                  decimalScale={2}
-                  value={getCartTotal(cart)}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"₹"}
-                />
-                <button disabled={processing || disabled || succeeded}>
-                  <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
-                </button>
+            {/* Payment Gateway */}
+            <div className="payment--section">
+              <div className="payment--title">
+                <h3>Payment Method:</h3>
               </div>
-              {/* Errors */}
-              {error && <div>{error}</div>}
-            </form>
+              <div className="payment--details">
+                {/* Stripe Secret Code */}
+                <form onSubmit={handleSubmit}>
+                  <CardElement onChange={handleChange} />
+                  <div className="payment--priceContainer">
+                            <CurrencyFormat
+                              renderText={(value) => (
+                                <>
+                                  <p>
+                                    Subtotal ({cart.length} items):<strong>{value}</strong>{" "}
+                                  </p>
+                                  
+                                </>
+                              )}
+                              decimalScale={2}
+                              value={getCartTotal(cart)}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              prefix={"₹"}
+                            />
+                            <button className="payment--button" disabled = {processing || disabled || succeeded}> 
+                                  <span>{processing ? <p>Processing</p> : "Buy Now"}</span>
+                            </button>
+                  </div>
+                            {/* Errors */}
+                            {error && <div>{error}</div>}
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export default Payment;
+      );
+    }
+    
+    export default Payment;
